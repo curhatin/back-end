@@ -2,9 +2,9 @@ const models = require("../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 exports.getAll = (req, res) => {
-  models.tags
+  models.comments
     .findAll()
-    .then(tag => res.send(tag))
+    .then(accounts => res.send(accounts))
     .catch(err => res.send(err));
 };
 
@@ -14,18 +14,18 @@ exports.post = (req, res) => {
 
   req.body.password = bcrypt.hashSync(req.body.password, salt);
   console.log(req.body);
-  models.tags
+  models.comments
     .create(req.body)
-    .then(tag =>
+    .then(comment =>
       res.send({
         message: "insert data success",
-        data: tag
+        data: comment
       })
     )
     .catch(err => res.send(err));
 };
 exports.deleteOne = (req, res) => {
-  models.tags
+  models.comments
     .findOne({ where: { id: req.params.id } })
     .then(user => {
       user
@@ -37,7 +37,7 @@ exports.deleteOne = (req, res) => {
 };
 
 exports.deleteAll = (req, res) => {
-  models.tags
+  models.comments
     .destroy({ where: {}, truncate: true })
     .then(result => res.send("success"))
     .catch(err => res.send(err));
@@ -45,14 +45,14 @@ exports.deleteAll = (req, res) => {
 
 exports.search = (req, res) => {
   console.log(req.query);
-  models.tags
+  models.comments
     .findAll({ where: req.query })
-    .then(account => res.send(account))
+    .then(comment => res.send(comment))
     .catch(err => res.send(err));
 };
 
 exports.update = (req, res) => {
-  models.tags
+  models.comments
     .update(req.body, {
       where: {
         id: req.params.id
